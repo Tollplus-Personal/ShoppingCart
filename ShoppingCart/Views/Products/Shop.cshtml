@@ -1,0 +1,89 @@
+﻿@model IEnumerable<ShoppingCart.Models.Product>
+
+@{
+    ViewData["Title"] = "Shop";
+}
+@{ 
+    string fi = "only";
+    string final = "Are Left!!";
+    string final1 = "Out of STOCK!!!";
+
+}
+<body style="background-color:burlywood">
+    <h1>Shop</h1>
+
+
+    <table class="table">
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    <h4>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </h4>
+                    <img style="height:100px;width:150px;" src="~/Images/@item.FileImage" alt="@item.ProductName" />
+                </td>
+                
+                <td>
+                    <div class="row">
+                        <div>
+                            <form class="" method="post" action="/Products/AddToCart">
+                                @Html.AntiForgeryToken()
+                                <div class="form-group">
+                                    <label>
+                                        Qty :
+                                    </label>
+                                    <select name="Qty" id="Qty" class="form-control">
+                                        :
+                                        @for (int i = 1; i <= item.ProductQuantity; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                </div>
+                                <br />
+                                <div class="form-group">
+                                    <label>
+                                        Price :
+                                    </label>
+                                    @item.ProductPrice.ToString("00.00");
+                                    <input type="hidden" name="Price" value="@item.ProductPrice" />
+                                </div>
+                                <div class="form-group">
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        <input type="submit" class="btn btn-success" value="Add To Cart" />
+                                        <input type="hidden" name="ProductId" value="@item.ProductId" />
+
+                                        <p style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; font-weight:200; color:red">
+
+                                            @if (@item.ProductQuantity == 0)
+                                            {
+                                                @final1;
+                                            }
+                                            else
+                                            {
+                                                @fi;
+                                                @Html.DisplayFor(modelItem => item.ProductQuantity)
+
+                                                @final;
+                                            }
+
+
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <a href=" /Identiy/Account/Login" class="btn btn-warning">Login to Order</a>
+                                    }
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </table>
+</body>

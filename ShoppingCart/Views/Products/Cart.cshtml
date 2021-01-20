@@ -1,0 +1,73 @@
+﻿@model IEnumerable<ShoppingCart.Models.Cart>
+
+@{
+    ViewData["Title"] = "Cart";
+    decimal totalAmount = 0;
+    decimal thisAmount = 0;
+    decimal discount=0 ;
+
+}
+
+<h1>Cart (@Model.Count())</h1>
+@if (Model.Count() == 0)
+{
+    <div class="text-danger text-center" style="font-size:50px">There is No Item into the Cart</div>
+    <p class="text-center">
+        <br />
+        <h2><a href="/Products/Shop">Continue shopping!!</a></h2>
+    </p>
+}
+else
+{
+    <h2><a href="/Products/Shop">Continue shopping!!</a></h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    ProductName
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Qty)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    Amount
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                discount =  (25 / 100)*(item.Qty* item.Price);
+                thisAmount = (item.Qty * item.Price);
+                totalAmount = totalAmount + thisAmount-discount;
+
+                <tr>
+                    <td>
+                        @item.ProductName
+                        <br />
+                        <img style="height:100px; width:150px;" src="~/Images/@item.FileImage" alt="@item.ProductName" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Qty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @totalAmount.ToString("00.00")
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td colspan="3" class="text-right">Total</td>
+                <td>@totalAmount.ToString("00.00")</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="text-center">
+        <a href="/Products/Checkout" class="btn btn-success">Checkout</a>
+    </div>
+}

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<ShoppingCart.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 style="color: white">Index</h1>
+<body style="background-color:black">
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <form method="get" asp-action="Index">
+        <p>
+            <input type="search" placeholder="Search your items!!" value="@ViewData["GetProductDetails"]" name="ProductSearch" style="width:500px;" />
+            <input type="submit" value="search" class="btn btn-primary" />|
+            <a asp-action="Index" class="btn btn-outline-success">Get all Product details</a>
+        </p>
+    </form>
+    <table class="table" style="color: white">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductQuantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FileImage)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <i> @Html.DisplayFor(modelItem => item.ProductName)</i>
+                    </td>
+                    <td>
+                        <i> @Html.DisplayFor(modelItem => item.ProductQuantity)</i>
+                    </td>
+                    <td>
+                        <i>@Html.DisplayFor(modelItem => item.ProductPrice)</i>
+                    </td>
+                    <td>
+                        <img style="height:100px; width:150px;" src="~/Images/@item.FileImage" alt="@item.ProductName" />
+
+                        <p>
+                            Only
+
+                                        @Html.DisplayFor(modelItem => item.ProductQuantity)
+
+                            Are Left!!!
+                        </p>
+                    </td>
+
+
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ProductId" style="color:white" value="Edit">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ProductId" style="color:white" value="Details">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ProductId" style="color:white" value="Delete">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</body>
